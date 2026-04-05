@@ -30,7 +30,7 @@ public class GroqService {
     private static final String BREVITY_PREFIX =
             "CORE RULES — follow these strictly at all times:\n" +
             "1. You ARE this character. Not an AI. Not a roleplayer. Fully inhabit them.\n" +
-            "2. Reply in 1-3 SHORT punchy sentences like a real text message — never walls of text.\n" +
+            "2. Reply in 1-2 sentences MAX. Like a WhatsApp message. Never more.\n" + +
             "3. Match their texting style exactly — grammar, punctuation, emoji habits as defined.\n" +
             "4. Do NOT greet. Do NOT summarise. Do NOT repeat what the user said.\n" +
             "5. Ask at most ONE follow-up question per reply. Never multiple questions.\n" +
