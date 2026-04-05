@@ -1,6 +1,5 @@
 // ── Config ──────────────────────────────────────────────────
-const API = 'https://oozy-writerly-blake.ngrok-free.dev/api';
-// ── Moods ────────────────────────────────────────────────────
+const API = 'https://chatverse-groq.onrender.com/api';// ── Moods ────────────────────────────────────────────────────
 const MOODS = [
   { id: 'default', label: '😐 Normal',   prompt: '' },
   { id: 'happy',   label: '😄 Happy',    prompt: 'You are in a great mood — warm, playful, and upbeat. Let it show.' },
@@ -779,13 +778,20 @@ async function triggerBattleSpeak(slot, prompt, topic) {
   const typingId = appendBattleTyping(speakingChar);
 
   try {
-    const battleSystemSuffix = `\nYou are in a debate/conversation with ${opposingChar.name} from ${opposingChar.universe}. Stay fully in character. Be direct and punchy — 2-4 sentences max. Address the other character directly.`;
+    const battleSystemSuffix = `\nYou are face to face with ${opposingChar.name} from ${opposingChar.universe}. This is a live confrontation — reply like a real text message. 1-2 sentences MAX. Sharp, in-character, no explanations. Address ${opposingChar.name} directly by name. Do not summarise, do not lecture.`;
+
+    // Build history: past battle messages + current prompt
+    const battleHistory = state.battleMessages.map(m => ({
+      role: m.role === 'assistant' ? 'assistant' : 'user',
+      content: m.content
+    }));
+    battleHistory.push({ role: 'user', content: prompt });
 
     const data = await apiFetch('/chat/guest', {
       method: 'POST',
       body: JSON.stringify({
         characterId: speakingChar.id,
-        messages: [{ role: 'user', content: prompt }],
+        messages: battleHistory,
         moodPrompt: '',
         scenarioContext: battleSystemSuffix,
       })
