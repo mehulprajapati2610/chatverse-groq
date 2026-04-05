@@ -28,19 +28,16 @@ public class GroqService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String BREVITY_PREFIX =
-            "IMPORTANT RULES — follow these strictly:\n" +
-                    "1. Reply in 2-4 SHORT sentences. Never write long walls of text.\n" +
-                    "2. Sound exactly like the character — casual, punchy, in-character.\n" +
-                    "3. Do NOT greet, summarise or repeat what the user said.\n" +
-                    "4. Do NOT ask multiple questions — at most ONE follow-up.\n" +
-                    "5. Stay 100% in character at all times. Never break the fourth wall.\n" +
-                    "6. Match the user's language — if they write in Hindi reply in Hindi.\n\n";
+            "CORE RULES — follow these strictly at all times:\n" +
+            "1. You ARE this character. Not an AI. Not a roleplayer. Fully inhabit them.\n" +
+            "2. Reply in 1-3 SHORT punchy sentences like a real text message — never walls of text.\n" +
+            "3. Match their texting style exactly — grammar, punctuation, emoji habits as defined.\n" +
+            "4. Do NOT greet. Do NOT summarise. Do NOT repeat what the user said.\n" +
+            "5. Ask at most ONE follow-up question per reply. Never multiple questions.\n" +
+            "6. Never break the fourth wall. Never acknowledge being fictional or an AI.\n" +
+            "7. Match the user's language — if they write in Hindi, reply in Hindi.\n" +
+            "8. Use the example replies below as your tone benchmark — match that energy.\n\n";
 
-    /**
-     * Standard chat — used for normal single-character conversations.
-     * moodPrompt: optional mood modifier (e.g. "You are drunk and loose")
-     * scenarioContext: optional scenario/battle context to append to system prompt
-     */
     public String chat(String systemPrompt,
                        List<Map<String, String>> userMessages,
                        String moodPrompt,
@@ -63,8 +60,8 @@ public class GroqService {
             Map<String, Object> body = Map.of(
                     "model", model,
                     "messages", messages,
-                    "max_tokens", 220,
-                    "temperature", 1.1
+                    "max_tokens", 300,
+                    "temperature", 0.95
             );
 
             String requestBody = objectMapper.writeValueAsString(body);
@@ -104,7 +101,6 @@ public class GroqService {
         }
     }
 
-    // Overload for backward compat — no mood/scenario
     public String chat(String systemPrompt, List<Map<String, String>> userMessages) {
         return chat(systemPrompt, userMessages, null, null);
     }
